@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Científica</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="calculadora">
+        <!-- Pantalla de visualización -->
+        <input type="text" id="pantalla" disabled placeholder="0">
+
+        <!-- Botones de la calculadora -->
+        <div class="botones">
+            <!-- Funciones Científicas -->
+            <button class="cientifico" onclick="insertar('sin(')">sin</button>
+            <button class="cientifico" onclick="insertar('cos(')">cos</button>
+            <button class="cientifico" onclick="insertar('tan(')">tan</button>
+            <button class="cientifico" onclick="insertar('log(')">log</button>
+
+            <button class="cientifico" onclick="aplicarPorcentaje()">%</button>
+            <button class="cientifico" onclick="insertar('e')">e</button>
+            <button class="cientifico" onclick="insertar('√(')">√</button>
+            <button class="cientifico" onclick="insertar('^')">^</button>
+
+            <!-- Números y Operaciones Básicas -->
+            <button onclick="insertar('(')">(</button>
+            <button onclick="insertar(')')">)</button>
+            <button class="borrar" onclick="retroceder()">DEL</button>
+            <button class="borrar" onclick="limpiar()">C</button>
+
+            <button onclick="insertar('7')">7</button>
+            <button onclick="insertar('8')">8</button>
+            <button onclick="insertar('9')">9</button>
+            <button class="operador" onclick="insertar('/')">/</button>
+
+            <button onclick="insertar('4')">4</button>
+            <button onclick="insertar('5')">5</button>
+            <button onclick="insertar('6')">6</button>
+            <button class="operador" onclick="insertar('*')">×</button>
+
+            <button onclick="insertar('1')">1</button>
+            <button onclick="insertar('2')">2</button>
+            <button onclick="insertar('3')">3</button>
+            <button class="operador" onclick="insertar('-')">-</button>
+
+            <button onclick="insertar('0')">0</button>
+            <!-- Botón cambiado de punto a coma -->
+            <button onclick="insertar(',')">,</button>
+            <button class="igual" onclick="calcular()">=</button>
+            <button class="operador" onclick="insertar('+')">+</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
