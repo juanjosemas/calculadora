@@ -23,7 +23,7 @@ body {
 
 #pantalla {
     width: 100%; /* La pantalla ocupa todo el ancho disponible del contenedor */
-    height: 24vh; /* Reduce la altura de la pantalla (antes era 20vh) */
+    height: 14vh; /* Reduce la altura de la pantalla (antes era 20vh) */
     font-size: 2.5rem; /* Ajusta el tamaño de los números para la nueva altura de pantalla */
     text-align: right; /* Alinea los números y el texto a la derecha */
     margin-bottom: 10px; /* Añade una separación entre la pantalla y los botones */
