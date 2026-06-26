@@ -23,10 +23,19 @@ function insertar(valor) {
     // Lista extendida de operadores y funciones
     const todosLosOperadores = ['+', '-', '*', '/', '^', '(', ')', 'sin(', 'cos(', 'tan(', 'log(', '√('];
 
+    // --- LÓGICA PARA LA COMA INICIAL (0,) ---
+    // Si el usuario pulsa la coma y: la pantalla está vacía, o viene de un resultado, o lo último fue un operador
+    if (valor === ',') {
+        if (pantalla.value === "" || esResultado || todosLosOperadores.includes(ultimoCaracter)) {
+            valor = "0,"; // Cambiamos el valor a insertar por "0,"
+        }
+    }
+
     // Lógica para decidir si borrar la pantalla al empezar un cálculo nuevo después de un "="
     if (esResultado) {
-        // Si pulsamos un número o una coma, empezamos de cero
-        if (!todosLosOperadores.includes(valor)) {
+        // Si pulsamos un número o una función (que no sea un operador básico), empezamos de cero
+        // Nota: Si valor ahora es "0,", esto también activará la limpieza
+        if (!operadoresBasicos.includes(valor)) {
             pantalla.value = "";
         }
         esResultado = false;
@@ -38,7 +47,7 @@ function insertar(valor) {
     let ultimoNumero = partes[partes.length - 1];
 
     // Permitimos insertar si es un operador o si el número actual no llega a 12 caracteres
-    if (todosLosOperadores.includes(valor) || ultimoNumero.length < 12) {
+    if (todosLosOperadores.includes(valor) || valor === "0," || ultimoNumero.length < 12) {
         pantalla.value += valor;
     }
 }
