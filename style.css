@@ -1,76 +1,78 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Define la fuente de texto principal para toda la página */
     display: flex; /* Utiliza Flexbox para el diseño del contenedor principal */
-    justify-content: center; /* Centra el contenido horizontalmente */
-    align-items: center; /* Centra el contenido verticalmente */
-    height: 100vh; /* Establece la altura al 100% del visor de la pantalla */
-    margin: 0; /* Elimina los márgenes externos para que no haya espacios blancos */
-    background-color: #f4f4f9; /* Define el color de fondo de la página */
+    justify-content: center; /* Centra la calculadora horizontalmente */
+    align-items: flex-start; /* Alinea la calculadora a la parte superior de la pantalla */
+    height: 100vh; /* Establece la altura del cuerpo al 100% del visor */
+    margin: 0; /* Elimina los márgenes externos del cuerpo */
+    background-color: #f4f4f9; /* Define el color de fondo gris claro de la página */
     overflow: hidden; /* Evita que aparezcan barras de desplazamiento en el móvil */
+    padding-top: 20px; /* Añade un espacio de margen en la parte superior */
 }
 
 .calculadora {
-    background-color: #333; /* Color de fondo gris oscuro para la estructura */
+    background-color: #333; /* Color de fondo gris oscuro para la estructura de la calculadora */
     display: flex; /* Convierte la calculadora en un contenedor flexible vertical */
     flex-direction: column; /* Alinea la pantalla y los botones uno debajo de otro */
-    width: 100vw; /* Hace que la calculadora ocupe todo el ancho de la pantalla del móvil */
-    height: 100vh; /* Hace que la calculadora ocupe todo el alto de la pantalla del móvil */
-    padding: 10px; /* Añade un pequeño espacio interno en los bordes */
+    width: 100vw; /* Hace que la calculadora ocupe todo el ancho de la pantalla */
+    height: 90vh; /* Reduce la altura total al 80% para dejar espacio en blanco debajo */
+    padding: 10px; /* Añade un espacio interno de separación en los bordes */
     box-sizing: border-box; /* Asegura que el padding no aumente el tamaño total del elemento */
+    border-radius: 0 0 20px 20px; /* Redondea solo las esquinas inferiores para un diseño más limpio */
 }
 
 #pantalla {
-    width: 100%; /* La pantalla ocupa todo el ancho disponible */
-    height: 20vh; /* La pantalla ocupa el 20% de la altura total del móvil */
-    font-size: 3rem; /* Aumenta mucho el tamaño del número para que se vea bien en móvil */
-    text-align: right; /* Alinea los resultados a la derecha */
-    margin-bottom: 10px; /* Separa la pantalla de la cuadrícula de botones */
-    padding: 20px; /* Añade espacio interno para que el texto no toque los bordes */
-    box-sizing: border-box; /* Mantiene el tamaño de la pantalla dentro de los límites */
-    border: none; /* Elimina bordes estéticos */
+    width: 100%; /* La pantalla ocupa todo el ancho disponible del contenedor */
+    height: 24vh; /* Reduce la altura de la pantalla (antes era 20vh) */
+    font-size: 2.5rem; /* Ajusta el tamaño de los números para la nueva altura de pantalla */
+    text-align: right; /* Alinea los números y el texto a la derecha */
+    margin-bottom: 10px; /* Añade una separación entre la pantalla y los botones */
+    padding: 15px; /* Espacio interno para que los números no toquen los bordes */
+    box-sizing: border-box; /* Mantiene el tamaño de la pantalla dentro de sus límites definidos */
+    border: none; /* Elimina cualquier borde visual de la pantalla */
     border-radius: 5px; /* Redondea ligeramente las esquinas de la pantalla */
-    background-color: #eee; /* Color de fondo claro para la zona de lectura */
-    color: #333; /* Color oscuro para los dígitos */
+    background-color: #eee; /* Color de fondo claro para facilitar la lectura */
+    color: #333; /* Color gris oscuro para los dígitos */
 }
 
 .botones {
-    flex-grow: 1; /* Hace que el contenedor de botones ocupe todo el espacio restante */
-    display: grid; /* Activa el diseño de cuadrícula */
-    grid-template-columns: repeat(4, 1fr); /* Crea 4 columnas de igual ancho */
-    grid-template-rows: repeat(7, 1fr); /* Crea 7 filas de igual altura para estirar los botones */
-    gap: 8px; /* Espacio de separación entre los botones */
+    flex-grow: 1; /* Hace que el contenedor de botones ocupe todo el alto restante de la calculadora */
+    display: grid; /* Activa el sistema de cuadrícula para los botones */
+    grid-template-columns: repeat(4, 1fr); /* Crea 4 columnas de igual tamaño */
+    grid-template-rows: repeat(7, 1fr); /* Crea 7 filas para distribuir los botones uniformemente */
+    gap: 8px; /* Espacio de separación entre cada botón */
 }
 
 button {
-    width: 100%; /* El botón ocupa todo el ancho de su celda */
-    height: 100%; /* El botón ocupa todo el alto de su celda para llenar la pantalla */
-    font-size: 1.5rem; /* Aumenta el tamaño del texto dentro de los botones */
-    font-weight: bold; /* Pone los números y letras en negrita */
-    border: none; /* Elimina bordes por defecto */
+    width: 100%; /* El botón ocupa todo el ancho de su celda en la cuadrícula */
+    height: 100%; /* El botón ocupa todo el alto de su celda en la cuadrícula */
+    font-size: 1.5rem; /* Establece el tamaño de los números y símbolos de los botones */
+    font-weight: bold; /* Aplica grosor de negrita al texto de los botones */
+    border: none; /* Elimina los bordes por defecto de los botones */
     border-radius: 8px; /* Redondea las esquinas de los botones */
-    cursor: pointer; /* Indica que es un elemento interactivo */
-    background-color: #555; /* Color gris para botones numéricos */
-    color: white; /* Texto blanco para mejor contraste */
-    transition: background 0.2s; /* Suaviza el cambio de color al tocar */
+    cursor: pointer; /* Cambia el cursor a una mano al pasar por encima */
+    background-color: #555; /* Color gris estándar para los botones numéricos */
+    color: white; /* Color blanco para el texto de los botones */
+    transition: background 0.2s; /* Suaviza el cambio de color al presionar el botón */
 }
 
 button:active {
-    background-color: #999; /* Cambia el color al pulsar para dar feedback visual (efecto móvil) */
+    background-color: #999; /* Cambia a un gris más claro mientras se mantiene pulsado el botón */
 }
 
 .operador {
-    background-color: #ff9500; /* Color naranja para operaciones básicas */
+    background-color: #ff9500; /* Color naranja para los botones de operaciones principales */
 }
 
 .cientifico {
-    background-color: #444; /* Color gris oscuro para funciones matemáticas */
-    font-size: 1.2rem; /* Tamaño de fuente ligeramente menor para funciones largas */
+    background-color: #444; /* Color gris oscuro para diferenciar las funciones científicas */
+    font-size: 1.2rem; /* Tamaño de fuente algo menor para que quepan palabras como sin o cos */
 }
 
 .borrar {
-    background-color: #ff3b30; /* Color rojo para funciones de borrado */
+    background-color: #ff3b30; /* Color rojo para los botones de borrado DEL y C */
 }
 
 .igual {
-    background-color: #34c759; /* Color verde para el botón de ejecución */
+    background-color: #34c759; /* Color verde para resaltar el botón de resultado final */
 }
