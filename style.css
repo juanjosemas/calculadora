@@ -15,7 +15,7 @@ body {
     display: flex; /* Convierte la calculadora en un contenedor flexible vertical */
     flex-direction: column; /* Alinea la pantalla y los botones uno debajo de otro */
     width: 100vw; /* Hace que la calculadora ocupe todo el ancho de la pantalla */
-    height: 90vh; /* Reduce la altura total al 80% para dejar espacio en blanco debajo */
+    height: 90vh; /* Reduce la altura total al 90% para dejar espacio en blanco debajo */
     padding: 10px; /* Añade un espacio interno de separación en los bordes */
     box-sizing: border-box; /* Asegura que el padding no aumente el tamaño total del elemento */
     border-radius: 0 0 20px 20px; /* Redondea solo las esquinas inferiores para un diseño más limpio */
