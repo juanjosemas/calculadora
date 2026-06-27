@@ -76,3 +76,20 @@ button:active {
 .igual {
     background-color: #34c759; /* Color verde para resaltar el botón de resultado final */
 }
+
+/* --- REGLAS PARA PANTALLAS GRANDES (PC) --- */
+@media (min-width: 600px) {
+    body {
+        align-items: center; /* Centra la calculadora verticalmente en el monitor */
+        padding-top: 0; /* Elimina el espacio superior que usamos en el móvil */
+    }
+    .calculadora {
+        width: 380px; /* Establece un ancho fijo similar a la calculadora de Windows */
+        height: 650px; /* Establece una altura fija proporcional */
+        border-radius: 20px; /* Redondea todas las esquinas en el escritorio */
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3); /* Añade una sombra para que flote sobre el fondo */
+    }
+    #pantalla {
+        height: 100px; /* Altura fija para la pantalla en modo PC */
+    }
+}
