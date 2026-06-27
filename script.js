@@ -24,17 +24,14 @@ function insertar(valor) {
     const todosLosOperadores = ['+', '-', '*', '/', '^', '(', ')', 'sin(', 'cos(', 'tan(', 'log(', '√('];
 
     // --- LÓGICA PARA LA COMA INICIAL (0,) ---
-    // Si el usuario pulsa la coma y: la pantalla está vacía, o viene de un resultado, o lo último fue un operador
     if (valor === ',') {
         if (pantalla.value === "" || esResultado || todosLosOperadores.includes(ultimoCaracter)) {
-            valor = "0,"; // Cambiamos el valor a insertar por "0,"
+            valor = "0,"; 
         }
     }
 
     // Lógica para decidir si borrar la pantalla al empezar un cálculo nuevo después de un "="
     if (esResultado) {
-        // Si pulsamos un número o una función (que no sea un operador básico), empezamos de cero
-        // Nota: Si valor ahora es "0,", esto también activará la limpieza
         if (!operadoresBasicos.includes(valor)) {
             pantalla.value = "";
         }
@@ -42,14 +39,37 @@ function insertar(valor) {
     }
 
     // --- LÓGICA DE BLOQUEO INTELIGENTE (12 DÍGITOS) ---
-    // Dividimos por los operadores para ver cuánto mide el número actual (incluyendo la coma)
-    let partes = pantalla.value.split(/[+\-*/^()]/);
+    // Quitamos los puntos de miles para contar solo los dígitos reales
+    let valorLimpio = pantalla.value.replace(/\./g, '');
+    let partes = valorLimpio.split(/[+\-*/^()]/);
     let ultimoNumero = partes[partes.length - 1];
 
-    // Permitimos insertar si es un operador o si el número actual no llega a 12 caracteres
+    // Permitimos insertar si es un operador o si el número actual no llega a 12 dígitos
     if (todosLosOperadores.includes(valor) || valor === "0," || ultimoNumero.length < 12) {
         pantalla.value += valor;
     }
+
+    // --- APLICAR FORMATO DE MILES EN VIVO ---
+    pantalla.value = aplicarFormatoMiles(pantalla.value);
+}
+
+// Función auxiliar para poner puntos en los miles y mantener la coma decimal
+function aplicarFormatoMiles(cadena) {
+    // Si es un mensaje de error, no formateamos
+    if (cadena === "Error") return cadena;
+
+    // 1. Quitamos los puntos de miles actuales para re-calcularlos
+    let sinPuntos = cadena.replace(/\./g, '');
+
+    // 2. Buscamos secuencias numéricas dentro de la expresión para formatearlas individualmente
+    // Esta regex identifica números que pueden tener una coma decimal
+    return sinPuntos.replace(/\d+(,\d*)?/g, (match) => {
+        let partes = match.split(',');
+        // Formatear la parte entera con puntos cada 3 dígitos
+        partes[0] = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        // Unir de nuevo con la parte decimal si existe
+        return partes.join(',');
+    });
 }
 
 // Función para borrar todo
@@ -61,13 +81,15 @@ function limpiar() {
 // Función para borrar el último carácter (DEL)
 function retroceder() {
     pantalla.value = pantalla.value.slice(0, -1);
+    // Re-aplicamos el formato tras borrar para asegurar que los puntos se ajusten
+    pantalla.value = aplicarFormatoMiles(pantalla.value);
 }
 
-// Función interna para asegurar que el resultado no supere los 12 caracteres y use comas
+// Función interna para asegurar que el resultado no supere los 12 caracteres y use comas y puntos
 function formatearResultado(numero) {
     let resStr = numero.toString();
 
-    // Si el número es largo, ajustamos precisión
+    // Si el número es muy largo, usamos notación científica o precisión
     if (resStr.length > 12) {
         resStr = numero.toPrecision(10);
         if (resStr.length > 12) {
@@ -75,8 +97,11 @@ function formatearResultado(numero) {
         }
     }
     
-    // Antes de devolver, convertimos el punto decimal en coma para la visualización
-    return resStr.toString().substring(0, 12).replace(/\./g, ',');
+    // Cambiamos el punto decimal de JavaScript por la coma visual
+    resStr = resStr.replace(/\./g, ',');
+    
+    // Aplicamos los puntos de miles al resultado final
+    return aplicarFormatoMiles(resStr);
 }
 
 // Función para convertir el valor actual en un porcentaje
@@ -95,10 +120,13 @@ function aplicarPorcentaje() {
 
 // Función auxiliar para traducir lo que ve el usuario a código JavaScript Math
 function prepararExpresion(expresion) {
-    // IMPORTANTE: Primero cambiamos las comas por puntos para que eval() funcione
-    let textoProcesado = expresion.replace(/,/g, '.');
+    // IMPORTANTE: Primero quitamos los puntos de miles para que no rompan el cálculo
+    let textoProcesado = expresion.replace(/\./g, '');
+    
+    // Luego cambiamos las comas decimales por puntos para que eval() funcione
+    textoProcesado = textoProcesado.replace(/,/g, '.');
 
-    // Luego reemplazamos las funciones científicas
+    // Reemplazamos las funciones científicas
     textoProcesado = textoProcesado
         .replace(/sin\(/g, 'Math.sin(')
         .replace(/cos\(/g, 'Math.cos(')
@@ -114,7 +142,18 @@ function prepararExpresion(expresion) {
 // Función principal para resolver la operación
 function calcular() {
     try {
-        let expresionLimpia = prepararExpresion(pantalla.value);
+        let expresion = pantalla.value;
+
+        // --- LÓGICA DE AUTO-CIERRE DE PARÉNTESIS ---
+        let abiertos = (expresion.match(/\(/g) || []).length;
+        let cerrados = (expresion.match(/\)/g) || []).length;
+
+        while (abiertos > cerrados) {
+            expresion += ')';
+            cerrados++;
+        }
+
+        let expresionLimpia = prepararExpresion(expresion);
         let resultado = eval(expresionLimpia);
         
         if (isNaN(resultado) || !isFinite(resultado)) {
